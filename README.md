@@ -54,7 +54,7 @@ Multiplication of 3 * 3 = 9
 ```
 #### At this point, zip your calculator with this files included only.
 
-![Custom smart contract](image_here_for_the_file_)
+![Custom smart contract](https://github.com/dragonchain-inc/custom-smart-contract-node-sdk/blob/master/assets/js.png)
 ```
 calculator.js
 package.json
