@@ -16,7 +16,6 @@ const payload = {
 
 const main = () => {
     const result = calculator.main(payload)
-    console.log(result);
 }
 
 main(); // Run the smart contract.

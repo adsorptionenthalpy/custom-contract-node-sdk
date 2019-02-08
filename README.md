@@ -18,11 +18,11 @@ $ cd <into_this_repo_you_cloned>
 > To be able to run your javascript code, please make sure you are inside your javascript directory.
 
 ```bash
-$ cd javascript
+$ cd custom-contract-js
 $ ls 
-calculator.js package.json
-```
 
+calculator.js   calculatorService.js  package.json
+```
 
 > The ```package.json``` file lists modules this project installs from npm. However, we are not using any for calculator.js. The package.json has "main", this is where your calculator.js will be called. It should match your file name to avoid issues.
 ```js
@@ -42,15 +42,17 @@ calculator.js package.json
 
 
 #### To test this example, run the following:
-
+Before running the code, you should read look into the index, calculator and the calculatorService files to understand what is happening.
 ```node
 $ node index.js
 ```
 
 #### Your output:
-```>javascript
-Calling Smart Contract{"method":"multiplication","parameters":{"numOne":3,"numTwo":3}}
-Multiplication of 3 * 3 = 9
+```javascript
+New payload:
+ {"method":"multiplication","parameters":{"numOne":3,"numTwo":3}}
+
+{ Values: { numOne: 3, numTwo: 3 }, Ans: 9 }
 ```
 #### At this point, zip your calculator with this files included only.
 
@@ -72,7 +74,8 @@ $ npm install
 
 ```js
 module.exports = {
-    DC_ID: 'DRAGONCHAIN_ID_HERE',
+    //[Chain One] you can add many chains here
+    DC_ID_ONE: 'DRAGONCHAIN_ID_HERE',
     AUTH_KEY_ID: 'PUT_IT_HERE',
     AUTH_KEY: 'PUT_IT_HERE'
 }
@@ -85,12 +88,15 @@ It should look similar to this example.
 ```js
 "use strict"
 const keys = require('./key');
-const {DragonchainClient} = require('dragonchain-sdk');
-const dragonchainClient = new DragonchainClient(keys.DC_ID);
+const {
+    DragonchainClient
+} = require('dragonchain-sdk');
+const dragonchainClient = new DragonchainClient(keys.DC_ID_ONE);
 const fs = require("fs");
 
+// load file
 const fileZip = () => {
-    return fs.readFileSync("calculatorFive.zip", "base64")
+    return fs.readFileSync("calculator.zip", "base64");
 }
 
 ```
@@ -108,7 +114,6 @@ const calculatorCustomContract = {
     "is_serial": true,
     "custom_environment_variables": {},
     "runtime": "nodejs8.10",
-    "runtype": "parallel",
     "code": `${fileZip()}`,
     "handler": "calculator.main"
 };
@@ -160,3 +165,45 @@ Block: {
   "transaction_id": "" // Your will be different
 }
 ```
+
+####You can verify your transaction by calling the
+
+```js
+dragonchainClient.queryTransactions('invoker:"tx_id"')
+```
+
+```json
+Successful call!
+Block: {
+  "results": [
+    {
+      "version": "1",
+      "dcrn": "Transaction::L1::FullTransaction",
+      "header": {
+        "txn_type": "calculator",
+        "dc_id": "D_CHAIN_ID",
+        "txn_id": "1deca0dc-ff5f-46bc-a968-5112a8b1b981",// Not real
+        "block_id": "3132322", // Not real
+        "timestamp": "1549588944",
+        "tag": "12345",
+        "invoker": "txn_id"
+      },
+      "payload": {
+        "Ans": 6,
+        "Values": {
+          "numOne": 3,
+          "numTwo": 3
+        }
+      },
+      "proof": {
+        "full": "EWERWEwFUfALH75G/pj0/n3/j5ufyz8UOzS1SQxQes=", // Not real
+        "stripped": "RRRRRRRRfXDWmfKKB+gUGG+K0pqm3wGvSeJwVfBPtPZAiAmcXC+3WwgpHaOSHyo2QoJakOV1HyLDzhliIU0ce3yrw==" //Not real
+      }
+    }
+  ],
+  "total": 1
+}
+```
+
+Congratulations! :boom: :dragon:  You have done it. Feel free to reach so we can improve our sdk. 
+### More projects to come...

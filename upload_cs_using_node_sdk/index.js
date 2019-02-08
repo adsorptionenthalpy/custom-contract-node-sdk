@@ -3,31 +3,29 @@ const keys = require('./key');
 const {
     DragonchainClient
 } = require('dragonchain-sdk');
-const dragonchainClient = new DragonchainClient(keys.DC_ID);
+const dragonchainClient = new DragonchainClient(keys.DC_ID_ONE);
 const fs = require("fs");
-
 
 // load file
 const fileZip = () => {
-    // return fs.readFileSync("calculator2.zip", "base64")
+    return fs.readFileSync("calculator.zip", "base64");
 }
 
 /**
- * 
- * Start with this first.
- *  
+ * Couple of things to remember before posting.
+ * The name and handler must have same name. The handler only .main, 
+ * must include runtime,  
  */
 const calculatorCustomContract = {
-    "version": "1",
+    "version": "2",
     "dcrn": "SmartContract::L1::Create",
     "name": "calculator",
     "sc_type": "transaction",
     "is_serial": true,
     "custom_environment_variables": {},
     "runtime": "nodejs8.10",
-    "runtype": "parallel",
     "code": `${fileZip()}`,
-    "origin": "calculator",
+    "origin": "custom",
     "handler": "calculator.main"
 };
 
@@ -38,25 +36,27 @@ const calculatorCustomContract = {
  * Dragonchain to complete building your smart contract.
  * 
  */
+// Version must be 1 not two
 const calculatorPayload = {
     "version": "1",
-    "txn_type": "calculator5",
-    "tag": "",
+    "txn_type": "calculatorLit",
+    "tag": "12345",
     "payload": {
-        "method": "multiplication",
+        "method": "addition",
         "parameters": {
-            "numOne": 90,
+            "numOne": 3,
             "numTwo": 3
         }
     }
 }
 
+//To test your code, please uncomment the exach function one by one
 const main = async () => {
-    // To test your code, please uncomment the exach function one by one
     // response(await dragonchainClient.createCustomContract(calculatorCustomContract));
-    response(await dragonchainClient.createTransaction(calculatorPayload)); 
-    // response(await dragonchainClient.getTransaction("transaction_id"));
-    // response(await dragonchainClient.queryTransactions('invocker:"3238d210-7d26-4263-baad-d606c1167220'));
+    // response(await dragonchainClient.createTransaction(calculatorPayload));
+    // response(await dragonchainClient.queryTransactions('invoker:"1deca0dc-0d66-4762-a78a-fbeb3bdefca4"'));   
+    // response(await dragonchainClient.getTransaction("23ebf669-daff-45f1-b240-5aae403c597e"));
+
 };
 
 const response = (call) => {
@@ -69,7 +69,6 @@ const response = (call) => {
         console.error(`Error response from chain: ${JSON.stringify(call.response,null, 2)}`);
     }
 }
-
 
 try {
     main();
