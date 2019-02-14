@@ -4,6 +4,8 @@ const {
     DragonchainClient
 } = require('dragonchain-sdk');
 const dragonchainClient = new DragonchainClient(keys.DC_ID_ONE);
+// dragonchainClient.overrideCredentials("authKeyId", "authKey"); // Replace that with your actual keys.
+const fs = require("fs");
 const fs = require("fs");
 
 // load file
@@ -16,6 +18,7 @@ const fileZip = () => {
  * The name and handler must have same name. The handler only .main, 
  * must include runtime,  
  */
+
 const calculatorCustomContract = {
     "version": "2",
     "dcrn": "SmartContract::L1::Create",
@@ -29,6 +32,15 @@ const calculatorCustomContract = {
     "handler": "calculator.main"
 };
 
+/**
+ * Before posting a transaction to calculator, wait for a couple minutes to allow 
+ * Dragonchain to complete building your smart contract.
+ */
+
+// Version must be 1 not two
+const calculatorPayload = {
+    "version": "1",
+    "txn_type": "calculator2",
 
 /**
  * 
@@ -44,20 +56,30 @@ const calculatorPayload = {
     "payload": {
         "method": "addition",
         "parameters": {
+            "numOne": 191919,
+            "numTwo": 78787
             "numOne": 3,
             "numTwo": 3
         }
     }
 }
 
-//To test your code, please uncomment the exach function one by one
+//To test your code, please uncomment the each function one by one
 const main = async () => {
-    // response(await dragonchainClient.createCustomContract(calculatorCustomContract));
-    // response(await dragonchainClient.createTransaction(calculatorPayload));
-    // response(await dragonchainClient.queryTransactions('invoker:"1deca0dc-0d66-4762-a78a-fbeb3bdefca4"'));   
-    // response(await dragonchainClient.getTransaction("23ebf669-daff-45f1-b240-5aae403c597e"));
+    try {
 
-};
+    response(await dragonchainClient.createCustomContract(calculatorCustomContract));
+    response(await dragonchainClient.createTransaction(calculatorPayload));
+    response(await dragonchainClient.queryTransactions('invoker:"1deca0dc-0d66-4762-a78a-fbeb3bdefca4"'));
+    response(await dragonchainClient.getSmartContractHeap(keys.DC_ID_ONE, "mainTest", true)
+        .then(data => {
+            return data
+    })
+
+.catch(err => {
+    return err
+}));
+
 
 const response = (call) => {
     if (call.ok) {
@@ -70,9 +92,5 @@ const response = (call) => {
     }
 }
 
-try {
-    main();
+main(); // call
 
-} catch (e) {
-    console.log(e);
-}

@@ -106,10 +106,7 @@ const fileZip = () => {
 
 ```js
 const calculatorCustomContract = {
-    "version": "1",
-    "dcrn": "SmartContract::L1::Create",
     "name": "calculator",
-    "origin": "custom",
     "sc_type": "transaction",
     "is_serial": true,
     "custom_environment_variables": {},
