@@ -202,5 +202,32 @@ Block: {
 }
 ```
 
+#### How do you access your data in the blockchain?
+> Dragonchain blockchain uses heap which stores data to the blockchain. 
+
+>What is a heap? A heap is a chain storage value where your smart contract state/data stored on the chain. Heap takes a (key, value). You can use the key to get data you stored on your blockchain. 
+If you take a look at the calculator smart contract, you will notice that we are returning key value state/data. Example in the code:
+```js
+
+"Values": {
+    "numOne": parameters['numOne'],
+    "numTwo": parameters['numTwo']
+},
+"Ans": calculatorService.addition(parameters)
+}
+```
+
+
+> The above key value is stored in the blockchain. To access the data, you do the following.
+Keys: Values and Ans
+```py
+
+# Get single data from the heap
+response(await dragonchainClient.getSmartContractHeap("Values", "calculator2", true));
+ # returns the answer value
+
+```
+
+
 Congratulations! :boom: :dragon:  You have done it. Feel free to reach so we can improve our sdk. 
 ### More projects to come...

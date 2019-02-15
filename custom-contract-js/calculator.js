@@ -1,6 +1,6 @@
 const {
     calculatorService
-} = require('./calculatorService');
+} = require('./src/calculatorService');
 
 /**
  * 

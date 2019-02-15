@@ -45,15 +45,18 @@ const calculatorPayload = {
 // To test your code, please uncomment the each function one by one
 const main = async () => {
   try {
-    response(
-      await dragonchainClient.createCustomContract(calculatorCustomContract)
-    )
-    response(await dragonchainClient.createTransaction(calculatorPayload))
-    response(
-      await dragonchainClient.queryTransactions(
-        'invoker:"1deca0dc-0d66-4762-a78a-fbeb3bdefca4"'
-      )
-    )
+    // response(
+    //   await dragonchainClient.createCustomContract(calculatorCustomContract)
+    // );
+    // response(await dragonchainClient.registerTransactionType());
+    // response(await dragonchainClient.createTransaction(calculatorPayload))
+    // response(
+    //   await dragonchainClient.queryTransactions(
+    //     'invoker:"1deca0dc-0d66-4762-a78a-fbeb3bdefca4"'
+    //   )
+    // )
+    // response(await dragonchainClient.getSmartContractHeap("Values", "calculator2", true));
+
   } catch (e) {
     console.log(e)
   }
