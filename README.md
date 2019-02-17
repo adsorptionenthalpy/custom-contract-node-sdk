@@ -268,5 +268,4 @@ response(await dragonchainClient.createTransaction(calculatorPayload))
 
 ```
 
-Congratulations! :boom: :dragon:  You have done it. Feel free to reach so we can improve our sdk. 
-### More projects to come...
+### Congratulations! :boom: :dragon:  You have done it. Feel free to try out our SDK and give us any feedback.
