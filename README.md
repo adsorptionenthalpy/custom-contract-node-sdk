@@ -5,6 +5,10 @@ There are currently two SDKs with more to come that can communicate with Dragonc
 
 > [Dragonchain Node SDK](https://github.com/dragonchain-inc/dragonchain-sdk-node)
 
+### System requirements
+
+* Must Nodejs installed. Please search it on the if you don't know what it is.
+* Have an ide/editor like vscode from Microsoft to use or any editor you are comfortable with.
 
 ## How to test each custom smart contract locally
 #### First clone the code
@@ -68,17 +72,6 @@ package.json
 $ cd ..
 $ cd using_sdk_post
 $ npm install
-```
-
-#### Change the values in your `keys.js` to your key's values.
-
-```js
-module.exports = {
-    //[Chain One] you can add many chains here
-    DC_ID_ONE: 'DRAGONCHAIN_ID_HERE',
-    AUTH_KEY_ID: 'PUT_IT_HERE',
-    AUTH_KEY: 'PUT_IT_HERE'
-}
 ```
 
 #### Before posting the calculator custom smart contract, make sure that you have your calculator.zip ready to upload. 

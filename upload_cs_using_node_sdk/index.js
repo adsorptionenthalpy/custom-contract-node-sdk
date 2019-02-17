@@ -57,7 +57,7 @@ const main = async () => {
   try {
     // EXECUTE THESE FUNCTIONS ONE BY ONE
 
-    // Before posting payload to create custom smart contract, make sure that everything is good
+    // Before posting payload to create custom contract, make sure that everything is good
     response(await dragonchainClient.createCustomContract(calculatorCustomContractPayload));
 
     // Register a transaction if you would like to just post transactions. Comment out createCustomContract code
