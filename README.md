@@ -56,7 +56,7 @@ New payload:
 ```
 #### At this point, zip your calculator with this files included only.
 
-(https://github.com/dragonchain-inc/custom-smart-contract-node-sdk/blob/master/assets/js.png)
+![Custom smart contract](https://github.com/dragonchain-inc/custom-smart-contract-node-sdk/blob/master/assets/js.png)
 ```
 calculator.js
 package.json
