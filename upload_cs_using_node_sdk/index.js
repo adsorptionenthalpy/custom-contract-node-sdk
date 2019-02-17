@@ -1,24 +1,16 @@
 'use strict'
-const keys = require('./key')
-
-const { DragonchainClient } = require('dragonchain-sdk')
-const dragonchainClient = new DragonchainClient(keys.DC_ID_ONE)
-// dragonchainClient.overrideCredentials("authKeyId", "authKey"); // Replace that with your actual keys.
 const fs = require('fs')
-const fs = require('fs')
-
-// load file
+const { DragonchainClient, setLogger, logger } = require('dragonchain-sdk')
+setLogger('dragonchain-sdk') // Logger incase you want view additional information.
+// Replace that with your actual keys.
+const dragonchainClient = new DragonchainClient("Dragonchain_id")
+dragonchainClient.overrideCredentials("authKeyId", "authKey"); 
+// Make sure that you have the calculator.zip
 const fileZip = () => {
   return fs.readFileSync('calculator.zip', 'base64')
 }
 
-/**
- * Couple of things to remember before posting.
- * The name and handler must have same name. The handler only .main,
- * must include runtime,
- */
-
-const calculatorCustomContract = {
+const calculatorCustomContractPayload = {
   version: '2',
   dcrn: 'SmartContract::L1::Create',
   name: 'calculator',
@@ -36,26 +28,51 @@ const calculatorCustomContract = {
  * Dragonchain to complete building your smart contract.
  */
 
-// Version must be 1 not two
+// Version must be 1 not twos
 const calculatorPayload = {
   version: '1',
-  txn_type: 'calculator2'
+  txn_type: 'calculator',
+  payload: {
+    'method': 'addition',
+    'parameters': {
+      'numOne': 30,
+      'numTwo': 20
+    }
+  }
+}
+
+const registerTransactionType = {
+    "version": "1",
+    "txn_type": "Your_Transaction_Name_here",
+    "custom_indexes": [
+      {
+        "key": "New, transaction, awesome",// This will allow you to be able to query this transaction
+        "path": ""
+      }
+    ]
 }
 
 // To test your code, please uncomment the each function one by one
 const main = async () => {
   try {
-    // response(
-    //   await dragonchainClient.createCustomContract(calculatorCustomContract)
-    // );
-    // response(await dragonchainClient.registerTransactionType());
-    // response(await dragonchainClient.createTransaction(calculatorPayload))
-    // response(
-    //   await dragonchainClient.queryTransactions(
-    //     'invoker:"1deca0dc-0d66-4762-a78a-fbeb3bdefca4"'
-    //   )
-    // )
-    // response(await dragonchainClient.getSmartContractHeap("Values", "calculator2", true));
+    // EXECUTE THESE FUNCTIONS ONE BY ONE
+
+    // Before posting payload to create custom smart contract, make sure that everything is good
+    response(await dragonchainClient.createCustomContract(calculatorCustomContractPayload));
+
+    // Register a transaction if you would like to just post transactions. Comment out createCustomContract code
+    response(await dragonchainClient.registerTransactionType(registerTransactionType));
+
+    // Create a transaction the calculator payload above. Remember to comment out registerTransactionType code.
+    // Copy the returned transaction_id and paste to the function below
+    response(await dragonchainClient.createTransaction(calculatorPayload))
+
+    // Get the transaction_id above and comment out createTransaction code.
+    response(await dragonchainClient.queryTransactions('invoker:"transaction_id"'))
+
+    // Get/access data stored in the heap by passing keys and the name of the smart contract.
+    // Values is a key, and calculator is a smart contract name.
+    response(await dragonchainClient.getSmartContractHeap("Values", "calculator", true));
 
   } catch (e) {
     console.log(e)

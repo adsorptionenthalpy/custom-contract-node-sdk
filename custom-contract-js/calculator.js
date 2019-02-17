@@ -4,8 +4,9 @@ const {
 
 /**
  * 
- * Dragonchain-inc
+ * Dragonchain-Inc
  * Dragonchain custom smart contract
+ * 
  */
 
 //Entry point 
@@ -13,7 +14,6 @@ module.exports.main = (event, context, cb) => {
     // Event will have a paylaod. 
     console.log("New payload: \n", JSON.stringify(event.payload), "\n");
     try {
-
         const {
             method,
             parameters

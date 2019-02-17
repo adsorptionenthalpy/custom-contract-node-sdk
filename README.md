@@ -21,7 +21,7 @@ $ cd <into_this_repo_you_cloned>
 $ cd custom-contract-js
 $ ls 
 
-calculator.js   calculatorService.js  package.json
+calculator.js   src/calculatorService.js  package.json
 ```
 
 > The ```package.json``` file lists modules this project installs from npm. However, we are not using any for calculator.js. The package.json has "main", this is where your calculator.js will be called. It should match your file name to avoid issues.
@@ -56,7 +56,7 @@ New payload:
 ```
 #### At this point, zip your calculator with this files included only.
 
-![Custom smart contract](https://github.com/dragonchain-inc/custom-smart-contract-node-sdk/blob/master/assets/js.png)
+(https://github.com/dragonchain-inc/custom-smart-contract-node-sdk/blob/master/assets/js.png)
 ```
 calculator.js
 package.json
@@ -87,35 +87,37 @@ It should look similar to this example.
 
 ```js
 "use strict"
-const keys = require('./key');
-const {
-    DragonchainClient
-} = require('dragonchain-sdk');
-const dragonchainClient = new DragonchainClient(keys.DC_ID_ONE);
-const fs = require("fs");
-
-// load file
+const fs = require('fs')
+const { DragonchainClient, setLogger, logger } = require('dragonchain-sdk')
+// Logger incase you want view to additional information
+// setLogger('dragonchain-sdk') 
+// Replace that with your actual keys.
+const dragonchainClient = new DragonchainClient("Dragonchain_id")
+dragonchainClient.overrideCredentials("authKeyId", "authKey"); 
+// Make sure that you have the calculator.zip
 const fileZip = () => {
-    return fs.readFileSync("calculator.zip", "base64");
+  return fs.readFileSync('calculator.zip', 'base64')
 }
 
 ```
 
-#### Here is the payload to pass to the Dragonchain createCustomContract method inside ```service.js```
-
+#### Here is the payload to pass to the Dragonchain createCustomContract method inside ```index.js```
 
 ```js
-const calculatorCustomContract = {
-    "name": "calculator",
-    "sc_type": "transaction",
-    "is_serial": true,
-    "custom_environment_variables": {},
-    "runtime": "nodejs8.10",
-    "code": `${fileZip()}`,
-    "handler": "calculator.main"
-};
+const calculatorCustomContractPayload = {
+  version: '2',
+  dcrn: 'SmartContract::L1::Create',
+  name: 'calculator',
+  sc_type: 'transaction',
+  is_serial: true,
+  custom_environment_variables: {},
+  runtime: 'nodejs8.10',
+  code: `${fileZip()}`, // Make sure that this file you are able to access in accessible 
+  origin: 'custom',
+  handler: 'calculator.main'
+}
 
-dragonchainClient.createSmartContract(calculatorCustomContract); 
+dragonchainClient.createSmartContract(calculatorCustomContractPayload); 
 ```
 
 #### To use the NODE_SDK to post the calculator contract, run this command
@@ -132,14 +134,17 @@ Block: {
 #### Congratulations! :boom: :dragon:  You are one step away from posting your first transaction to your calculator smart contract
 
 #### Here is how to post transction to your calulator
-> Before posting your transcation, comment out the     
-```
-// response(await dragonchainClient.createCustomContra(calculatorCustomContract));
-```
+> Before posting your transcation, comment out the  code below. Take a look at the sample code with extra comments   
 
->Then run this command.
 ```js
+response(await dragonchainClient.createCustomContra(calculatorCustomContract));
 
+```
+
+
+> This is your transaction payload. Cross check with your code sample inside index.
+
+```js
 const calculatorPayload = {
     "version": "1",
     "txn_type": "calculator",
@@ -154,6 +159,8 @@ const calculatorPayload = {
 }
 ```
 
+> Then run this command.
+
 ```bash
 $ node index.js
 
@@ -163,10 +170,10 @@ Block: {
 }
 ```
 
-####You can verify your transaction by calling the
+####You can verify your transaction by calling the function below.
 
 ```js
-dragonchainClient.queryTransactions('invoker:"tx_id"')
+dragonchainClient.queryTransactions('invoker:"transaction_id"') // Follow the code on index.js
 ```
 
 ```json
@@ -204,30 +211,62 @@ Block: {
 
 #### How do you access your data in the blockchain?
 > Dragonchain blockchain uses heap which stores data to the blockchain. 
-
->What is a heap? A heap is a chain storage value where your smart contract state/data stored on the chain. Heap takes a (key, value). You can use the key to get data you stored on your blockchain. 
+What is a heap? A heap is a chain storage value where your smart contract state/data stored on the chain. Heap takes a (key, value). You can use the key to get data you stored on your blockchain. 
 If you take a look at the calculator smart contract, you will notice that we are returning key value state/data. Example in the code:
 ```js
 
-"Values": {
-    "numOne": parameters['numOne'],
-    "numTwo": parameters['numTwo']
-},
-"Ans": calculatorService.addition(parameters)
+return { 
+    "Values": {
+      "numOne": parameters['numOne'],
+      "numTwo": parameters['numTwo']
+  },
+  "Ans": calculatorService.addition(parameters)
+  }
 }
 ```
 
 
-> The above key value is stored in the blockchain. To access the data, you do the following.
-Keys: Values and Ans
-```py
+> The above key value is stored in the blockchain. To get your contract head, you must do the following:
 
-# Get single data from the heap
-response(await dragonchainClient.getSmartContractHeap("Values", "calculator2", true));
- # returns the answer value
+```js
+Get single data from the heap
+response(await dragonchainClient.getSmartContractHeap("Values", "calculator", true));
+
+This will return whatever the value is from the heap
 
 ```
 
+#### Registering a transaction.
+
+```js
+
+const registerTransactionType = {
+    "version": "1",
+    "txn_type": "Your_Transaction_Name",
+    "custom_indexes": [
+      {
+        "key": "New, transaction, awesome",// This will allow you to be able to query this transaction
+        "path": ""
+      }
+    ]
+}
+// Register a transaction if you would like to just post transactions. Comment out createCustomContract code
+response(await dragonchainClient.registerTransactionType(registerTransactionType));
+
+```
+#### Post to your new transaction.
+
+```js
+const txn_payload = {
+  "version": "1",
+  "txn_type": "Your_Transaction_Name",
+  "tag": "",
+  "payload": "Posting my first transaction to Dragonchain"
+}    
+
+response(await dragonchainClient.createTransaction(calculatorPayload))
+
+```
 
 Congratulations! :boom: :dragon:  You have done it. Feel free to reach so we can improve our sdk. 
 ### More projects to come...
