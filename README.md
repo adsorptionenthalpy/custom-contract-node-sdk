@@ -1,16 +1,34 @@
-## Welcome to the Dragonchain code sample repository
+# Welcome
 
-> These code samples are an example of Dragonchain custom smart contract. You will be deploying a calculator smart contract and post some transactions.
-There are currently two SDKs with more to come that can communicate with Dragonchain platform. Take a look at the node sdk below
+This tutorial is designed for those looking to build blockchain solution on Dragonchain platform. This tutorial includes writing a calculator smart contract and how to use Dragonchain Node SDK.
+
+### Target audience 
+
+Developers developers developers
+
+### This short tutorial aims to answer the following
+
+* System requirements
+* Test smart contract locally
+* Structure of smart contact
+* Authentication requirements
+* How to post a smart contract
+* How to post a transaction
+* How to query current transaction 
+* How to register a transaction 
+
+### System requirements
+
+There are currently two SDKs with more to come that can communicate with Dragonchain platform. Please go check out our SDKs for more information in the links below.
 
 > [Dragonchain Node SDK](https://github.com/dragonchain-inc/dragonchain-sdk-node)
 
 ### System requirements
 
-* Must Nodejs installed. Please search it on the if you don't know what it is.
-* Have an ide/editor like vscode from Microsoft to use or any editor you are comfortable with.
+* Must have Nodejs installed
+* Have an Ide/editor like vscode from Microsoft to use or any editor you are comfortable with.
 
-## How to test each custom smart contract locally
+### Test smart contract locally
 #### First clone the code
 
 ```bash
@@ -60,23 +78,28 @@ New payload:
 ```
 #### At this point, zip your calculator with this files included only.
 
+### Structure of smart contract
+
 ![Custom smart contract](https://github.com/dragonchain-inc/custom-smart-contract-node-sdk/blob/master/assets/js.png)
-```
-calculator.js
-package.json
-```
 
-#### Next, cd into the using_sdk_post directory and run npm install to download the dragonchain-sdk.
+
+Next, cd into the using_sdk_post directory and run npm install to download the dragonchain-sdk.
 
 ```
-$ cd ..
-$ cd using_sdk_post
-$ npm install
+→ cd ..
+→ cd using_sdk_post
+→ npm install
 ```
+
 
 #### Before posting the calculator custom smart contract, make sure that you have your calculator.zip ready to upload. 
 
-It should look similar to this example.
+
+### Authentication requirements
+
+* Click view chains and copy "ChainId"
+* Locate "Generate New API Key": You will be given to two keys.
+* Copy and paste the your keys below:
 
 ```js
 "use strict"
@@ -93,8 +116,9 @@ const fileZip = () => {
 }
 
 ```
+### How to post a smart contract
 
-#### Here is the payload to pass to the Dragonchain createCustomContract method inside ```index.js```
+ Here is the payload to pass to the Dragonchain createCustomContract method inside ```index.js```
 
 ```js
 const calculatorCustomContractPayload = {
@@ -113,11 +137,10 @@ const calculatorCustomContractPayload = {
 dragonchainClient.createSmartContract(calculatorCustomContractPayload); 
 ```
 
-#### To use the NODE_SDK to post the calculator contract, run this command
+> Run this command
 
 ```bash
-$ node index.js
-
+→ node index.js
 Successful call!
 Block: {
   "success": "Contract creation in progress."
@@ -126,14 +149,9 @@ Block: {
 
 #### Congratulations! :boom: :dragon:  You are one step away from posting your first transaction to your calculator smart contract
 
-#### Here is how to post transction to your calulator
-> Before posting your transcation, comment out the  code below. Take a look at the sample code with extra comments   
+### How to post transction
 
-```js
-response(await dragonchainClient.createCustomContra(calculatorCustomContract));
-
-```
-
+``
 
 > This is your transaction payload. Cross check with your code sample inside index.
 
@@ -163,7 +181,8 @@ Block: {
 }
 ```
 
-####You can verify your transaction by calling the function below.
+### How to query current transaction 
+You can verify your transaction by calling the function below.
 
 ```js
 dragonchainClient.queryTransactions('invoker:"transaction_id"') // Follow the code on index.js
@@ -202,7 +221,7 @@ Block: {
 }
 ```
 
-#### How do you access your data in the blockchain?
+#### Heap
 > Dragonchain blockchain uses heap which stores data to the blockchain. 
 What is a heap? A heap is a chain storage value where your smart contract state/data stored on the chain. Heap takes a (key, value). You can use the key to get data you stored on your blockchain. 
 If you take a look at the calculator smart contract, you will notice that we are returning key value state/data. Example in the code:
@@ -229,7 +248,7 @@ This will return whatever the value is from the heap
 
 ```
 
-#### Registering a transaction.
+### How to register a transaction
 
 ```js
 
