@@ -149,7 +149,7 @@ Block: {
 
 #### Congratulations! :boom: :dragon:  You are one step away from posting your first transaction to your calculator smart contract
 
-### How to post transction
+### How to post transaction
 
 ``
 
@@ -168,6 +168,9 @@ const calculatorPayload = {
         }
     }
 }
+
+response(await dragonchainClient.createTransaction(calculatorPayload))
+
 ```
 
 > Then run this command.
