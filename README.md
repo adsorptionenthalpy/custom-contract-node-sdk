@@ -2,6 +2,10 @@
 
 This tutorial is designed for those looking to build blockchain solution on Dragonchain platform. It includes writing a calculator smart contract and how to use Dragonchain Node SDK.
 
+# Attention:
+
+> ## The Dragonchain Platform is implementing improvements that will allow developers to write smart contracts in a variety of programming languages using Docker images.
+
 ### Target audience 
 
 Developers developers developers
@@ -23,8 +27,6 @@ There are currently two SDKs with more to come that can communicate with Dragonc
 
 > [Dragonchain Node SDK](https://github.com/dragonchain-inc/dragonchain-sdk-node)
 
-### System requirements
-
 * Must have Nodejs installed
 * Have an Ide/editor like vscode from Microsoft to use or any editor you are comfortable with.
 
@@ -32,21 +34,18 @@ There are currently two SDKs with more to come that can communicate with Dragonc
 #### First clone the code
 
 ```bash
-$ git clone <this_repo_link_here>
-$ cd <into_this_repo_you_cloned>
+→ git clone <this_repo_link_here>
+→ cd <into_this_repo_you_cloned>
 ```
 
 #### Using the JavaScript Dragonchain Smart Contract
 > To be able to run your javascript code, please make sure you are inside your javascript directory.
 
 ```bash
-$ cd custom-contract-js
-$ ls 
-
-calculator.js   src/calculatorService.js  package.json
+→ cd custom-contract-js
 ```
 
-> The ```package.json``` file lists modules this project installs from npm. However, we are not using any for calculator.js. The package.json has "main", this is where your calculator.js will be called. It should match your file name to avoid issues.
+The ```package.json``` file lists modules this project installs from npm. However, we are not using any for calculator.js. The package.json has "main", this is where your calculator.js will be called. It should match your file name to avoid issues.
 ```js
 {
   "name": "calculator",
@@ -66,7 +65,7 @@ calculator.js   src/calculatorService.js  package.json
 #### To test this example, run the following:
 Before running the code, you should read look into the index, calculator and the calculatorService files to understand what is happening.
 ```node
-$ node index.js
+→ node index.js
 ```
 
 #### Your output:
@@ -104,17 +103,9 @@ Next, cd into the using_sdk_post directory and run npm install to download the d
 ```js
 "use strict"
 const fs = require('fs')
-const { DragonchainClient, setLogger, logger } = require('dragonchain-sdk')
-// Logger incase you want view to additional information
-// setLogger('dragonchain-sdk') 
-// Replace that with your actual keys.
-const dragonchainClient = new DragonchainClient("Dragonchain_id")
-dragonchainClient.overrideCredentials("authKeyId", "authKey"); 
-// Make sure that you have the calculator.zip
-const fileZip = () => {
-  return fs.readFileSync('calculator.zip', 'base64')
-}
-
+const { DragonchainClient} = require('dragonchain-sdk')
+const dragonchainClient = new DragonchainClient("Dragonchain_id") // Replace with your actual chain id
+dragonchainClient.overrideCredentials("authKeyId", "authKey"); // Replace with your actual keys
 ```
 ### How to post a smart contract
 
