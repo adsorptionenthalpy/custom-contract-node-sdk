@@ -226,7 +226,7 @@ return {
       "numOne": parameters['numOne'],
       "numTwo": parameters['numTwo']
   },
-  "Ans": calculatorService.addition(parameters)
+  "addition": calculatorService.addition(parameters)
   }
 }
 ```
@@ -236,7 +236,7 @@ return {
 
 ```js
 Get single data from the heap
-response(await dragonchainClient.getSmartContractHeap("Values", "calculator", true));
+response(await dragonchainClient.getSmartContractHeap("addition", "calculator", true));
 
 This will return whatever the value is from the heap
 
